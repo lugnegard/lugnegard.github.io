@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Träningsschema</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c26;
+    --surface2: #1e2333;
+    --accent: #e8ff47;
+    --accent2: #47c8ff;
+    --red: #ff4757;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 8vw, 72px);
+    letter-spacing: 4px;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 4px;
+    max-width: 420px;
+    margin: 0 auto 32px;
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    color: #0f1117;
+    font-weight: 600;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* WEEKLY SCHEDULE */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .day-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  .day-card.intensity-high { border-left: 3px solid var(--red); }
+  .day-card.intensity-med { border-left: 3px solid var(--accent2); }
+  .day-card.intensity-low { border-left: 3px solid var(--muted); }
+  .day-card.intensity-fixed { border-left: 3px solid var(--accent); }
+
+  .day-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .day-workout {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .day-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .intensity-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .intensity-high .intensity-badge { background: rgba(255,71,87,0.15); color: var(--red); }
+  .intensity-med .intensity-badge { background: rgba(71,200,255,0.15); color: var(--accent2); }
+  .intensity-low .intensity-badge { background: rgba(107,114,128,0.15); color: var(--muted); }
+  .intensity-fixed .intensity-badge { background: rgba(232,255,71,0.15); color: var(--accent); }
+
+  .emoji { font-size: 20px; margin-bottom: 8px; display: block; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 24px auto 0;
+    max-width: 600px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* STRENGTH TAB */
+  .strength-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .workout-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .workout-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .workout-header.tuesday { background: linear-gradient(135deg, rgba(71,200,255,0.1), transparent); }
+  .workout-header.sunday { background: linear-gradient(135deg, rgba(232,255,71,0.1), transparent); }
+
+  .workout-day-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+
+  .tuesday .workout-day-label { color: var(--accent2); }
+  .sunday .workout-day-label { color: var(--accent); }
+
+  .workout-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .exercise-list {
+    padding: 8px 0;
+  }
+
+  .exercise-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 80px;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    gap: 8px;
+  }
+
+  .exercise-row:last-child { border-bottom: none; }
+  .exercise-row:hover { background: rgba(255,255,255,0.03); }
+
+  .exercise-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .exercise-muscle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .exercise-sets {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent2);
+    letter-spacing: 1px;
+  }
+
+  .sunday-block .exercise-sets { color: var(--accent); }
+
+  .exercise-reps {
+    text-align: right;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .col-headers {
+    display: grid;
+    grid-template-columns: 1fr 60px 80px;
+    padding: 8px 24px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .col-header {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+
+  .col-header:nth-child(2) { text-align: center; }
+  .col-header:nth-child(3) { text-align: right; }
+
+  .tip-box {
+    margin: 24px auto 0;
+    max-width: 1100px;
+    background: rgba(232,255,71,0.05);
+    border: 1px solid rgba(232,255,71,0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .tip-icon { font-size: 18px; flex-shrink: 0; }
+
+  .tip-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tip-text strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Träningsschema</h1>
+  <p>Man, 55 år · 6 pass per vecka</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('schedule')">Veckoschema</button>
+  <button class="tab-btn" onclick="switchTab('strength')">Styrkepass</button>
+</div>
+
+<!-- TAB 1: WEEKLY SCHEDULE -->
+<div id="tab-schedule" class="tab-content active">
+  <div class="week-grid">
+
+    <div class="day-card intensity-fixed">
+      <span class="intensity-badge">Fast</span>
+      <span class="emoji">🏊</span>
+      <div class="day-name">Måndag</div>
+      <div class="day-workout">Simning – Crawl</div>
+      <div class="day-detail">3 000 m · Jämnt tempo<br>Startar veckan med medelhög belastning</div>
+    </div>
+
+    <div class="day-card intensity-high">
+      <span class="intensity-badge">Hög</span>
+      <span class="emoji">💪</span>
+      <div class="day-name">Tisdag</div>
+      <div class="day-workout">Styrketräning – Överkropp</div>
+      <div class="day-detail">Bröst, rygg, axlar, armar<br>Ca 60–70 min · 90–120 sek vila</div>
+    </div>
+
+    <div class="day-card intensity-fixed">
+      <span class="intensity-badge">Fast · Hög</span>
+      <span class="emoji">🔥</span>
+      <div class="day-name">Onsdag</div>
+      <div class="day-workout">Grit 30 min + Body Core 30 min</div>
+      <div class="day-detail">Grit: Intensiv helkropp, kardio + styrka<br>Body Core: Bål, stabilitet & rörlighet<br>Totalt ca 60 min</div>
+    </div>
+
+    <div class="day-card intensity-low">
+      <span class="intensity-badge">Vila</span>
+      <span class="emoji">😴</span>
+      <div class="day-name">Torsdag</div>
+      <div class="day-workout">Vila</div>
+      <div class="day-detail">Kritisk återhämtningsdag<br>Tre hårda pass i rad mån–ons</div>
+    </div>
+
+    <div class="day-card intensity-med">
+      <span class="intensity-badge">Medel–Hög</span>
+      <span class="emoji">🚴</span>
+      <div class="day-name">Fredag</div>
+      <div class="day-workout">Spinning eller Intervall</div>
+      <div class="day-detail">Välj spinning om benen är tunga<br>Intervall om du känner dig pigg</div>
+    </div>
+
+    <div class="day-card intensity-fixed">
+      <span class="intensity-badge">Fast</span>
+      <span class="emoji">🏊</span>
+      <div class="day-name">Lördag</div>
+      <div class="day-workout">Simning – Crawl</div>
+      <div class="day-detail">3 000 m · Fokus på teknik<br>Axlarna vilade sedan tisdag</div>
+    </div>
+
+    <div class="day-card intensity-high">
+      <span class="intensity-badge">Hög</span>
+      <span class="emoji">🦵</span>
+      <div class="day-name">Söndag</div>
+      <div class="day-workout">Styrketräning – Underkropp</div>
+      <div class="day-detail">Ben, gluteus, vader<br>Ca 45–50 min · 2–3 min vila</div>
+    </div>
+
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Fast tid</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Hög intensitet</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div> Medel intensitet</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div> Vila</div>
+  </div>
+</div>
+
+<!-- TAB 2: STRENGTH WORKOUTS -->
+<div id="tab-strength" class="tab-content">
+  <div class="strength-grid">
+
+    <!-- TUESDAY -->
+    <div class="workout-block">
+      <div class="workout-header tuesday">
+        <div>
+          <div class="workout-day-label">Tisdag</div>
+          <div class="workout-subtitle">Överkropp · 60–70 min · 90–120 sek vila</div>
+        </div>
+      </div>
+      <div class="col-headers">
+        <div class="col-header">Övning</div>
+        <div class="col-header">Set</div>
+        <div class="col-header">Reps</div>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Hantelpress på bänk</div>
+            <div class="exercise-muscle">Bröst · Axlar · Triceps</div>
+          </div>
+          <div class="exercise-sets">4</div>
+          <div class="exercise-reps">8–10</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Latsdrag (bred grip)</div>
+            <div class="exercise-muscle">Rygg · Biceps</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">10–12</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Sittande rodd (kabel)</div>
+            <div class="exercise-muscle">Rygg · Biceps · Bakre axlar</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">10–12</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Axelpress (hantlar)</div>
+            <div class="exercise-muscle">Axlar · Triceps</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">10–12</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Sidolyft</div>
+            <div class="exercise-muscle">Sidoaxlar</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">12–15</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Bicepscurl (hantlar)</div>
+            <div class="exercise-muscle">Biceps</div>
+          </div>
+          <div class="exercise-sets">2</div>
+          <div class="exercise-reps">12</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Triceps pushdown (kabel)</div>
+            <div class="exercise-muscle">Triceps</div>
+          </div>
+          <div class="exercise-sets">2</div>
+          <div class="exercise-reps">12–15</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUNDAY -->
+    <div class="workout-block sunday-block">
+      <div class="workout-header sunday">
+        <div>
+          <div class="workout-day-label">Söndag</div>
+          <div class="workout-subtitle">Underkropp · 45–50 min · 2–3 min vila</div>
+        </div>
+      </div>
+      <div class="col-headers">
+        <div class="col-header">Övning</div>
+        <div class="col-header">Set</div>
+        <div class="col-header">Reps</div>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Front squat</div>
+            <div class="exercise-muscle">Quad · Gluteus · Core</div>
+          </div>
+          <div class="exercise-sets">4</div>
+          <div class="exercise-reps">6–8</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Marklyft</div>
+            <div class="exercise-muscle">Baksida lår · Gluteus · Rygg</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">5–6</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Utfall (stående)</div>
+            <div class="exercise-muscle">Quad · Gluteus · Balans</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">10/ben</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Leg extension</div>
+            <div class="exercise-muscle">Quad (isolering)</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">12–15</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Höftlyft / Hip thrust</div>
+            <div class="exercise-muscle">Gluteus</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">12–15</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name">Vadpress</div>
+            <div class="exercise-muscle">Vader</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">15–20</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">
+      <strong>Tips för 55+:</strong> Värm upp 5–10 min med rörlighetsövningar och lätta vikter. Prioritera <strong>teknik över maxvikt</strong> – öka med 2,5 kg när du klarar övre repsgränsen på alla set. Lägg in en <strong>deload-vecka var 4:e vecka</strong> där du sänker volymen med 40–50%.
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
