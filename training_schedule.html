@@ -10,7 +10,7 @@
     --bg: #0f1117;
     --surface: #181c26;
     --surface2: #1e2333;
-    --accent: #e8ff47;
+    --accent: #00e5c0;
     --accent2: #47c8ff;
     --red: #ff4757;
     --text: #e8eaf0;
@@ -108,11 +108,31 @@
     position: relative;
     overflow: hidden;
     transition: transform 0.2s, border-color 0.2s;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .day-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(15,17,23,0.82) 0%, rgba(15,17,23,0.65) 100%);
+    z-index: 0;
+    border-radius: 14px;
+  }
+
+  .day-card > * {
+    position: relative;
+    z-index: 1;
   }
 
   .day-card:hover {
     transform: translateY(-2px);
     border-color: rgba(255,255,255,0.15);
+  }
+
+  .day-card:hover::before {
+    background: linear-gradient(160deg, rgba(15,17,23,0.70) 0%, rgba(15,17,23,0.50) 100%);
   }
 
   .day-card.intensity-high { border-left: 3px solid var(--red); }
@@ -172,7 +192,19 @@
   .intensity-low .intensity-badge { background: rgba(107,114,128,0.15); color: var(--muted); }
   .intensity-fixed .intensity-badge { background: rgba(232,255,71,0.15); color: var(--accent); }
 
-  .emoji { font-size: 20px; margin-bottom: 8px; display: block; }
+  .emoji {
+    font-size: 32px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
 
   /* LEGEND */
   .legend {
@@ -224,7 +256,7 @@
   }
 
   .workout-header.tuesday { background: linear-gradient(135deg, rgba(71,200,255,0.1), transparent); }
-  .workout-header.sunday { background: linear-gradient(135deg, rgba(232,255,71,0.1), transparent); }
+  .workout-header.sunday { background: linear-gradient(135deg, rgba(0,229,192,0.1), transparent); }
 
   .workout-day-label {
     font-family: 'Bebas Neue', sans-serif;
@@ -311,8 +343,8 @@
   .tip-box {
     margin: 24px auto 0;
     max-width: 1100px;
-    background: rgba(232,255,71,0.05);
-    border: 1px solid rgba(232,255,71,0.15);
+    background: rgba(0,229,192,0.05);
+    border: 1px solid rgba(0,229,192,0.15);
     border-radius: 12px;
     padding: 16px 20px;
     display: flex;
@@ -335,7 +367,7 @@
 
 <header>
   <h1>Träningsschema</h1>
-  <p>Man, 55 år · 6 pass per vecka</p>
+  <p>6 pass per vecka</p>
 </header>
 
 <div class="tabs">
@@ -347,16 +379,16 @@
 <div id="tab-schedule" class="tab-content active">
   <div class="week-grid">
 
-    <div class="day-card intensity-fixed clickable" onclick="window.open('https://www.facebook.com/share/g/1CMHiM7p6u/?mibextid=wwXIfr','_blank')">
-      <span class="intensity-badge">Fast</span>
+    <div class="day-card intensity-med clickable" style="background-image:linear-gradient(135deg, #0a2a4a 0%, #0d4f7c 50%, #1a7ab5 100%)" onclick="window.open('https://www.facebook.com/share/g/1CMHiM7p6u/?mibextid=wwXIfr','_blank')">
+      <span class="intensity-badge">Medel</span>
       <span class="emoji">🏊</span>
       <div class="day-name">Måndag</div>
       <div class="day-workout">Simning – Crawl</div>
-      <div class="day-detail">3 000 m · Jämnt tempo<br>Startar veckan med medelhög belastning</div>
+      <div class="day-detail">3 000 m · Fokus på fart<br>Startar veckan med medelhög belastning</div>
       <span class="link-hint">↗ Facebook-grupp</span>
     </div>
 
-    <div class="day-card intensity-high clickable" onclick="switchTab('strength');document.querySelector('.tab-btn:nth-child(2)').classList.add('active');document.querySelector('.tab-btn:nth-child(1)').classList.remove('active')">
+    <div class="day-card intensity-high clickable" style="background-image:linear-gradient(135deg, #1a0a0a 0%, #5c1a1a 50%, #8b2020 100%)" onclick="switchTab('strength');document.querySelector('.tab-btn:nth-child(2)').classList.add('active');document.querySelector('.tab-btn:nth-child(1)').classList.remove('active')">
       <span class="intensity-badge">Hög</span>
       <span class="emoji">💪</span>
       <div class="day-name">Tisdag</div>
@@ -365,8 +397,8 @@
       <span class="link-hint">↗ Visa styrkepass</span>
     </div>
 
-    <div class="day-card intensity-fixed clickable" onclick="window.open('https://www.medley.se/ljungsbro-fritidscenter/grupptraning/','_blank')">
-      <span class="intensity-badge">Fast · Hög</span>
+    <div class="day-card intensity-high clickable" style="background-image:linear-gradient(135deg, #1a0a00 0%, #6b2d00 50%, #c45000 100%)" onclick="window.open('https://www.medley.se/ljungsbro-fritidscenter/grupptraning/','_blank')">
+      <span class="intensity-badge">Hög</span>
       <span class="emoji">🔥</span>
       <div class="day-name">Onsdag</div>
       <div class="day-workout">Grit 30 min + Body Core 30 min</div>
@@ -374,7 +406,7 @@
       <span class="link-hint">↗ Medley Ljungsbro</span>
     </div>
 
-    <div class="day-card intensity-low">
+    <div class="day-card intensity-low" style="background-image:linear-gradient(135deg, #0d1a0d 0%, #1a3a2a 50%, #2a5a3a 100%)">
       <span class="intensity-badge">Vila</span>
       <span class="emoji">😴</span>
       <div class="day-name">Torsdag</div>
@@ -382,7 +414,7 @@
       <div class="day-detail">Kritisk återhämtningsdag<br>Tre hårda pass i rad mån–ons</div>
     </div>
 
-    <div class="day-card intensity-med clickable" onclick="window.open('https://www.medley.se/ljungsbro-fritidscenter/grupptraning/','_blank')">
+    <div class="day-card intensity-med clickable" style="background-image:linear-gradient(135deg, #0a0a2a 0%, #1a1a6b 50%, #2a2ab5 100%)" onclick="window.open('https://www.medley.se/ljungsbro-fritidscenter/grupptraning/','_blank')">
       <span class="intensity-badge">Medel–Hög</span>
       <span class="emoji">🚴</span>
       <div class="day-name">Fredag</div>
@@ -391,16 +423,16 @@
       <span class="link-hint">↗ Medley Ljungsbro</span>
     </div>
 
-    <div class="day-card intensity-fixed clickable" onclick="window.open('https://www.facebook.com/share/g/1CMHiM7p6u/?mibextid=wwXIfr','_blank')">
-      <span class="intensity-badge">Fast</span>
+    <div class="day-card intensity-med clickable" style="background-image:linear-gradient(135deg, #0a2a4a 0%, #0d4f7c 50%, #1a7ab5 100%)" onclick="window.open('https://www.facebook.com/share/g/1CMHiM7p6u/?mibextid=wwXIfr','_blank')">
+      <span class="intensity-badge">Medel</span>
       <span class="emoji">🏊</span>
       <div class="day-name">Lördag</div>
       <div class="day-workout">Simning – Crawl</div>
-      <div class="day-detail">3 000 m · Fokus på teknik<br>Axlarna vilade sedan tisdag</div>
+      <div class="day-detail">3 000 m · Fokus på distans<br>Axlarna vilade sedan tisdag</div>
       <span class="link-hint">↗ Facebook-grupp</span>
     </div>
 
-    <div class="day-card intensity-high clickable" onclick="switchTab('strength');document.querySelector('.tab-btn:nth-child(2)').classList.add('active');document.querySelector('.tab-btn:nth-child(1)').classList.remove('active')">
+    <div class="day-card intensity-high clickable" style="background-image:linear-gradient(135deg, #1a1500 0%, #5c4a00 50%, #8b7000 100%)" onclick="switchTab('strength');document.querySelector('.tab-btn:nth-child(2)').classList.add('active');document.querySelector('.tab-btn:nth-child(1)').classList.remove('active')">
       <span class="intensity-badge">Hög</span>
       <span class="emoji">🦵</span>
       <div class="day-name">Söndag</div>
@@ -412,7 +444,6 @@
   </div>
 
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Fast tid</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Hög intensitet</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div> Medel intensitet</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div> Vila</div>
@@ -566,7 +597,7 @@
   <div class="tip-box">
     <div class="tip-icon">💡</div>
     <div class="tip-text">
-      <strong>Tips för 55+:</strong> Värm upp 5–10 min med rörlighetsövningar och lätta vikter. Prioritera <strong>teknik över maxvikt</strong> – öka med 2,5 kg när du klarar övre repsgränsen på alla set. Lägg in en <strong>deload-vecka var 4:e vecka</strong> där du sänker volymen med 40–50%.
+      <strong>Tips:</strong> Värm upp 5–10 min med rörlighetsövningar och lätta vikter. Prioritera <strong>teknik över maxvikt</strong> – öka med 2,5 kg när du klarar övre repsgränsen på alla set. Lägg in en <strong>deload-vecka var 4:e vecka</strong> där du sänker volymen med 40–50%.
     </div>
   </div>
 </div>
