@@ -361,6 +361,23 @@
   }
 
   .tip-text strong { color: var(--accent); }
+
+  .exercise-name a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(0,229,192,0.4);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .exercise-name a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .exercise-name a::after {
+    content: ' ▶';
+    font-size: 10px;
+    color: var(--accent);
+    opacity: 0.7;
+  }
 </style>
 </head>
 <body>
@@ -459,7 +476,7 @@
       <div class="workout-header tuesday">
         <div>
           <div class="workout-day-label">Tisdag</div>
-          <div class="workout-subtitle">Överkropp · 60–70 min · 90–120 sek vila</div>
+          <div class="workout-subtitle">Överkropp · 65–75 min · 90–120 sek vila</div>
         </div>
       </div>
       <div class="col-headers">
@@ -470,7 +487,7 @@
       <div class="exercise-list">
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Hantelpress på bänk</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/liggande-hantelpress/" target="_blank">Hantelpress på bänk</a></div>
             <div class="exercise-muscle">Bröst · Axlar · Triceps</div>
           </div>
           <div class="exercise-sets">4</div>
@@ -478,23 +495,31 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Latsdrag (bred grip)</div>
-            <div class="exercise-muscle">Rygg · Biceps</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/latsdrag/" target="_blank">Latsdrag (bred grip)</a></div>
+            <div class="exercise-muscle">Rygg · Biceps → stödjer crawl-draget</div>
           </div>
           <div class="exercise-sets">3</div>
           <div class="exercise-reps">10–12</div>
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Sittande rodd (kabel)</div>
-            <div class="exercise-muscle">Rygg · Biceps · Bakre axlar</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/sittande-kabelrodd/" target="_blank">Sittande rodd (kabel)</a></div>
+            <div class="exercise-muscle">Rygg · Biceps · Bakre axlar → stödjer crawl-draget</div>
           </div>
           <div class="exercise-sets">3</div>
           <div class="exercise-reps">10–12</div>
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Axelpress (hantlar)</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/facepull/" target="_blank">Face pulls (kabel)</a></div>
+            <div class="exercise-muscle">Bakre axlar · Rotatormanschett → skyddar axeln i catch-fasen</div>
+          </div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">15–20</div>
+        </div>
+        <div class="exercise-row">
+          <div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/axelpress-med-hantlar/" target="_blank">Axelpress (hantlar)</a></div>
             <div class="exercise-muscle">Axlar · Triceps</div>
           </div>
           <div class="exercise-sets">3</div>
@@ -502,7 +527,7 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Sidolyft</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/sidolyft-med-hantlar/" target="_blank">Sidolyft</a></div>
             <div class="exercise-muscle">Sidoaxlar</div>
           </div>
           <div class="exercise-sets">3</div>
@@ -510,15 +535,15 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Bicepscurl (hantlar)</div>
-            <div class="exercise-muscle">Biceps</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/utatrotation-av-axel-med-band/" target="_blank">Extern rotation (gummiband)</a></div>
+            <div class="exercise-muscle">Rotatormanschett → förebygger axelskada vid simning</div>
           </div>
-          <div class="exercise-sets">2</div>
-          <div class="exercise-reps">12</div>
+          <div class="exercise-sets">3</div>
+          <div class="exercise-reps">15–20</div>
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Triceps pushdown (kabel)</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/triceps-pushdown/" target="_blank">Triceps pushdown (kabel)</a></div>
             <div class="exercise-muscle">Triceps</div>
           </div>
           <div class="exercise-sets">2</div>
@@ -543,7 +568,7 @@
       <div class="exercise-list">
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Front squat</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/frontboj/" target="_blank">Front squat</a></div>
             <div class="exercise-muscle">Quad · Gluteus · Core</div>
           </div>
           <div class="exercise-sets">4</div>
@@ -551,7 +576,7 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Marklyft</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/marklyft/" target="_blank">Marklyft</a></div>
             <div class="exercise-muscle">Baksida lår · Gluteus · Rygg</div>
           </div>
           <div class="exercise-sets">3</div>
@@ -559,7 +584,7 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Utfall (stående)</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/utfall-med-hantlar/" target="_blank">Utfall (stående)</a></div>
             <div class="exercise-muscle">Quad · Gluteus · Balans</div>
           </div>
           <div class="exercise-sets">3</div>
@@ -567,7 +592,7 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Leg extension</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/benspark/" target="_blank">Leg extension</a></div>
             <div class="exercise-muscle">Quad (isolering)</div>
           </div>
           <div class="exercise-sets">3</div>
@@ -575,7 +600,7 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Höftlyft / Hip thrust</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/hip-thrust/" target="_blank">Höftlyft / Hip thrust</a></div>
             <div class="exercise-muscle">Gluteus</div>
           </div>
           <div class="exercise-sets">3</div>
@@ -583,7 +608,7 @@
         </div>
         <div class="exercise-row">
           <div>
-            <div class="exercise-name">Vadpress</div>
+            <div class="exercise-name"><a href="https://www.styrkelabbet.se/staende-vadpress/" target="_blank">Vadpress</a></div>
             <div class="exercise-muscle">Vader</div>
           </div>
           <div class="exercise-sets">3</div>
